@@ -4,21 +4,17 @@ import UserNotifications
 struct ContentView: View {
     @State private var alarmTime = Date()
     @State private var isAlarmSet = false
-    private let notificationDelegate = NotificationDelegate()
 
-        init() {
-            // Set the notification delegate
-            UNUserNotificationCenter.current().delegate = notificationDelegate
-
-            // Request notification permission
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
-                if let error = error {
-                    print("Notification permission error: \(error)")
-                }
+    init() {
+        // Request notification permission
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error)")
             }
         }
+    }
+
     var body: some View {
-        
         VStack {
             Text("Never Snooze")
                 .font(.largeTitle)
@@ -30,7 +26,7 @@ struct ContentView: View {
 
             Toggle("Alarm On/Off", isOn: $isAlarmSet)
                 .padding()
-                .onChange(of: isAlarmSet) { oldValue, newValue in
+                .onChange(of: isAlarmSet) { newValue in
                     if newValue {
                         scheduleAlarm(for: alarmTime)
                     }
@@ -51,6 +47,7 @@ struct ContentView: View {
         return formatter.string(from: date)
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

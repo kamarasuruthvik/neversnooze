@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct neversnoozeApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @State private var showAlarmDismissView = false
     init() {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
                 if let error = error {
@@ -19,8 +21,22 @@ struct neversnoozeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .preferredColorScheme(.dark)
+            if showAlarmDismissView {
+                AlarmDismissView()
+                    .preferredColorScheme(.dark)
+                    .onReceive(NotificationCenter.default.publisher(for: Notification.Name("AlarmDismissed"))) {
+                        _ in
+                        showAlarmDismissView = false
+                    }
+            } else {
+                ContentView()
+                    .preferredColorScheme(.dark)
+                    .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("AlarmNotificationTapped"))) { _ in
+                        // Switch to AlarmDismissView when the notification is tapped
+                        showAlarmDismissView = true
+                    }
+            }
+
         }
     }
 }
