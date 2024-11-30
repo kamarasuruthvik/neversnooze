@@ -1,6 +1,7 @@
 import UserNotifications
 import SwiftUICore
 
+
 func scheduleAlarm(for date: Date) {
     let content = UNMutableNotificationContent()
     content.title = "Alarm"
