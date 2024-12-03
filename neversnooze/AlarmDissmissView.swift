@@ -2,7 +2,21 @@ import SwiftUI
 import AVFoundation
 
 struct AlarmDismissView: View {
-    @State private var question = "Loading question..."
+    @State private var questions = [
+        "What is 2 + 2?",
+        "What color is the sky on a clear day?",
+        "How many days are there in a week?",
+        "What is the capital of France?",
+        "What is 5 x 3?"
+    ]
+    @State private var answers = [
+        "4",
+        "blue",
+        "7",
+        "paris",
+        "15"
+    ]
+    @State private var currentQuestionIndex = 0
     @State private var userAnswer = ""
     @State private var questionsAnswered = 0
     @State private var isAlarmDismissed = false
@@ -11,7 +25,7 @@ struct AlarmDismissView: View {
     var body: some View {
         VStack {
             if !isAlarmDismissed {
-                Text(question)
+                Text(questions[currentQuestionIndex])
                     .font(.headline)
                     .padding()
 
@@ -28,10 +42,22 @@ struct AlarmDismissView: View {
                 .foregroundColor(.white)
                 .background(Color.gray)
                 .cornerRadius(8)
+
+                Button("Snooze") {
+                    snoozeAlarm()
+                }
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.blue)
+                .cornerRadius(8)
             } else {
                 Text("Alarm Dismissed")
                     .font(.title)
                     .foregroundColor(.green)
+                    .onAppear {
+                        // Notify when the alarm is dismissed
+                        NotificationCenter.default.post(name: NSNotification.Name("AlarmDismissed"), object: nil)
+                    }
             }
         }
         .padding()
@@ -43,7 +69,7 @@ struct AlarmDismissView: View {
     }
 
     func submitAnswer() {
-        if !userAnswer.isEmpty {
+        if !userAnswer.isEmpty && userAnswer.lowercased() == answers[currentQuestionIndex].lowercased() {
             questionsAnswered += 1
             userAnswer = ""
 
@@ -54,12 +80,28 @@ struct AlarmDismissView: View {
             } else {
                 loadNextQuestion()
             }
+        } else {
+            // Handle incorrect answer (e.g., show a message or retry)
+            print("Incorrect answer. Please try again.")
         }
     }
 
+    func snoozeAlarm() {
+        stopAlarmSound()
+        // Schedule a new alarm 5 minutes from now
+        let snoozeTime = Calendar.current.date(byAdding: .minute, value: 5, to: Date()) ?? Date()
+        scheduleAlarm(for: snoozeTime)
+        // Close the alarm view
+        isAlarmDismissed = true
+    }
+
     func loadNextQuestion() {
-        // Simulating a LLM question fetch here for testing
-        question = "What is 2 + 2?"
+        // Load the next question in sequence
+        if currentQuestionIndex < questions.count - 1 {
+            currentQuestionIndex += 1
+        } else {
+            currentQuestionIndex = 0 // Loop back to the beginning if we reach the end
+        }
     }
 
     func playAlarmSound() {
