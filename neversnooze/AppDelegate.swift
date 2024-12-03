@@ -8,9 +8,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Notify SwiftUI that the notification has been tapped
-        NotificationCenter.default.post(name: NSNotification.Name("AlarmNotificationTapped"), object: nil)
+        // Notify to navigate to the AlarmDismissView
+        NotificationCenter.default.post(name: Notification.Name("AlarmNotificationTapped"), object: nil)
         completionHandler()
     }
-}
 
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Redirect to AlarmDismissView if the alarm sound is active
+        if alarmAudioPlayer?.isPlaying == true {
+            NotificationCenter.default.post(name: Notification.Name("AlarmTriggered"), object: nil)
+        }
+    }
+}

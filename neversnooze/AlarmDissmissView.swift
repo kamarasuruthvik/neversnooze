@@ -105,7 +105,7 @@ struct AlarmDismissView: View {
     }
 
     func playAlarmSound() {
-        if let soundURL = Bundle.main.url(forResource: "alarm-sound", withExtension: "mp3") {
+        if let soundURL = Bundle.main.url(forResource: "alarm_sound", withExtension: "wav") {
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
                 audioPlayer?.numberOfLoops = -1  // Loop indefinitely until stopped

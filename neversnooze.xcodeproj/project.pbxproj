@@ -29,30 +29,9 @@
 		CFA6B30F2CF6F9B5004CA0DF /* neversnoozeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = neversnoozeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CF87D9072CFBC4F400502E7B /* Exceptions for "neversnooze" folder in "neversnoozeTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"soundAssets/alarm-sound.mp3",
-			);
-			target = CFA6B3042CF6F9B5004CA0DF /* neversnoozeTests */;
-		};
-		CF87D9082CFBC4F400502E7B /* Exceptions for "neversnooze" folder in "neversnoozeUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"soundAssets/alarm-sound.mp3",
-			);
-			target = CFA6B30E2CF6F9B5004CA0DF /* neversnoozeUITests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CFA6B2F72CF6F9B3004CA0DF /* neversnooze */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				CF87D9072CFBC4F400502E7B /* Exceptions for "neversnooze" folder in "neversnoozeTests" target */,
-				CF87D9082CFBC4F400502E7B /* Exceptions for "neversnooze" folder in "neversnoozeUITests" target */,
-			);
 			path = neversnooze;
 			sourceTree = "<group>";
 		};
