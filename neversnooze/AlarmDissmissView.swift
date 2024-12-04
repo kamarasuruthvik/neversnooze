@@ -21,10 +21,29 @@ struct AlarmDismissView: View {
     @State private var questionsAnswered = 0
     @State private var isAlarmDismissed = false
     @State private var audioPlayer: AVAudioPlayer?
+    @State private var feedbackMessage: String? = nil
+    @State private var isCorrect: Bool = false
 
     var body: some View {
         VStack {
             if !isAlarmDismissed {
+                // Feedback Section
+                if let message = feedbackMessage {
+                    VStack {
+                        Text(isCorrect ? "Correct!" : "Wrong Answer")
+                            .font(.title)
+                            .foregroundColor(isCorrect ? .green : .red)
+                        Text(message)
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                    .padding()
+                    .background(isCorrect ? Color.green.opacity(0.2) : Color.red.opacity(0.2))
+                    .cornerRadius(8)
+                }
+
+                // Question Section
                 Text(questions[currentQuestionIndex])
                     .font(.headline)
                     .padding()
@@ -70,6 +89,9 @@ struct AlarmDismissView: View {
 
     func submitAnswer() {
         if !userAnswer.isEmpty && userAnswer.lowercased() == answers[currentQuestionIndex].lowercased() {
+            // Correct Answer
+            isCorrect = true
+            feedbackMessage = "Remaining questions: \(max(3 - questionsAnswered - 1, 0))"
             questionsAnswered += 1
             userAnswer = ""
 
@@ -81,7 +103,9 @@ struct AlarmDismissView: View {
                 loadNextQuestion()
             }
         } else {
-            // Handle incorrect answer (e.g., show a message or retry)
+            // Incorrect Answer
+            isCorrect = false
+            feedbackMessage = "Remaining questions: \(max(3 - questionsAnswered, 0))"
             print("Incorrect answer. Please try again.")
         }
     }
